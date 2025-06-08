@@ -24,7 +24,6 @@
   };
   systemd.services.NetworkManager-wait-online.enable = false;
   services.flatpak.enable = true;
-  services.flatpak.overrides.global.Context.filesystems = [ "nix/store:ro" ];
 
   networking.hostName = "LogiRaptor";
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
