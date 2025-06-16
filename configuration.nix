@@ -163,6 +163,7 @@
     kitty
     libsForQt5.ark
     libsForQt5.qt5.qtwayland
+    libsForQt5.qt5ct
     lorri
     maple-mono.NF
     mlocate
@@ -190,6 +191,8 @@
     swaybg
     #symbola
     texlive.combined.scheme-medium
+    vscode
+    vscode-fhs
     vesktop
     vlc
     kdePackages.xwaylandvideobridge

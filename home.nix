@@ -18,6 +18,7 @@
     eza
     tree
     bat
+    libsForQt5.qtstyleplugin-kvantum
   ];
 
   programs.fish = {
@@ -29,11 +30,17 @@
     };
   };
   home.pointerCursor = {
+    dotIcons.enable = true;
     gtk.enable = true;
     x11.enable = true;
-    package = pkgs.phinger-cursors;
-    name = "phinger-cursors";
+    package = pkgs.banana-cursor;
+    name = "Banana Cursor";
     size = 64;
+  };
+  gtk.enable = true;
+  gtk.cursorTheme = {
+    name = "Banana Cursor";
+    package = pkgs.banana-cursor;
   };
   programs.starship = {
     enable = true;
