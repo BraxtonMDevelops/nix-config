@@ -18,9 +18,16 @@
   #services.emacs.enable = true;
   # Use the GRUB boot loader.
   # Additionally this is setup to allow us to detect WinDDOS installs...
+  #
   boot.loader.systemd-boot = {
     enable = true;
     configurationLimit = 10;
+  };
+  # Fix Cursor Issues
+  qt = {
+    enable = true;
+    platformTheme = "qt5ct";
+    style = "kvantum";
   };
   systemd.services.NetworkManager-wait-online.enable = false;
   services.flatpak.enable = true;
@@ -67,12 +74,15 @@
   # Linux Kernel setup:
 
   #Rewritten version of X11 things
-  hardware.nvidia = {
-    modesetting.enable = true;
-    open = true;
-    nvidiaSettings = true;
-    forceFullCompositionPipeline = true;
-  };
+  #hardware.nvidia = {
+  #  modesetting.enable = true;
+  #  open = true;
+  #  nvidiaSettings = true;
+  #  forceFullCompositionPipeline = true;
+  #};
+  # TODO Rewrite opengl stuff with graphics
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   hardware.graphics.enable = true;
   hardware.opengl = {
     enable = true;
@@ -82,8 +92,8 @@
   services.xserver = {
 
     #Enable the X11 windowing system and set up Nvidia
-    enable = true;
-    videoDrivers = [ "nvidia" ];
+    #enable = true;
+    videoDrivers = [ ];
 
     #displayManager.gddm.enable = true;
 
@@ -229,5 +239,5 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.05"; # Did you read the
+  system.stateVersion = "25.05"; # Did you read the
 }
