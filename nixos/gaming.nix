@@ -4,6 +4,7 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }:
 
@@ -16,6 +17,8 @@
     # Different Launchers besides the STEAM
     lutris
     heroic
+    protonplus
+    inputs.paring.packages.x86_64-linux.xmcl
     # Setup different JDKs for Prism Launcher usage.
     (prismlauncher.override {
       jdks = [

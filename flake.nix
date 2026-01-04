@@ -2,10 +2,13 @@
   description = "Personal configuration of NixOS, made with flakes.";
 
   inputs = {
+    firefox.url = "github:nix-community/flake-firefox-nightly";
     zen-browser.url = "github:omarcresp/zen-browser-flake";
     prismlauncher.url = "github:PrismLauncher/PrismLauncher";
+    paring.url = "github:paring-chan/nix-packages";
     niri.url = "github:sodiboo/niri-flake";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    stable.url = "github:nixos/nixpkgs/nixos-25.05";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
     flake-parts.url = "github:hercules-ci/flake-parts";
     home-manager = {
@@ -20,6 +23,7 @@
       home-manager,
       nixpkgs,
       flake-parts,
+      stable,
       ...
     }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; } (

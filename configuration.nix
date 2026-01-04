@@ -23,15 +23,11 @@
     enable = true;
     configurationLimit = 10;
   };
-  # Fix Cursor Issues
-  qt = {
-    enable = true;
-    platformTheme = "qt5ct";
-    style = "kvantum";
-  };
   systemd.services.NetworkManager-wait-online.enable = false;
   services.flatpak.enable = true;
-
+  virtualisation.docker = {
+    enable = true;
+  };
   networking.hostName = "LogiRaptor";
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
   #networking.networkmanager.wifi.backend = "iwd";
@@ -117,6 +113,7 @@
   users.users.mjolnir = {
     isNormalUser = true;
     extraGroups = [
+      "docker"
       "wheel"
       "video"
       "audio"
@@ -137,10 +134,13 @@
     # Continue regular packages.
     alejandra
     bat
+    bottles
+    brave
     clang
     coreutils
     direnv
     discord
+    docker-compose
     ((emacsPackagesFor pkgs.emacs).emacsWithPackages (
       epkgs: with epkgs; [
         vterm
@@ -154,6 +154,9 @@
     fd
     findutils
     firefox
+    firefoxpwa
+    inputs.firefox.packages.x86_64-linux.firefox-nightly-bin
+    flatpak
     ghostty
     git
     gtk4
@@ -161,7 +164,7 @@
     home-manager
     jost
     kitty
-    libsForQt5.ark
+    kdePackages.ark
     libsForQt5.qt5.qtwayland
     libsForQt5.qt5ct
     lorri
@@ -174,10 +177,13 @@
     nix-output-monitor
     nixpkgs-fmt
     #nyxt
+    obsidian
     ollama
-    onlyoffice-bin
+    onlyoffice-desktopeditors
     pavucontrol
     phinger-cursors
+    piper
+    #inputs.stable.legacyPackages.x86_64-linux.protonvpn-gui
     protonvpn-gui
     qbittorrent
     qt6.qtwayland
@@ -187,24 +193,32 @@
     nixfmt-rfc-style
     spotify
     sqlite
-    sumneko-lua-language-server
+    lua-language-server
     swaybg
     #symbola
     texlive.combined.scheme-medium
+    usbutils
     vscode
     vscode-fhs
     vesktop
     vlc
-    kdePackages.xwaylandvideobridge
-    wine
+    #kdePackages.xwaylandvideobridge
     wev
     wezterm
-    #wezterm-git
+   #wezterm-git
+    winboat
+    wine
     wlr-randr
     wl-clipboard
     yt-dlp
   ];
+  
 
+  programs.firefox = {
+    enable = true;
+    package = pkgs.firefox;
+    nativeMessagingHosts.packages = [ pkgs.firefoxpwa ];
+  };
   # started in user sessions.
   # programs.mtr.enable = true;
   # programs.gnupg.agent = {

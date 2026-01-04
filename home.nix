@@ -10,6 +10,7 @@
 
 {
   imports = [
+    "./desktop/niri.nix"
   ];
   home.username = "mjolnir";
   home.homeDirectory = "/home/mjolnir";
