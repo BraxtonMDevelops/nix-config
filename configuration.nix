@@ -184,6 +184,7 @@
     phinger-cursors
     piper
     #inputs.stable.legacyPackages.x86_64-linux.protonvpn-gui
+    progress
     protonvpn-gui
     qbittorrent
     qt6.qtwayland
