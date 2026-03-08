@@ -1,20 +1,41 @@
 {
   description = "Personal configuration of NixOS, made with flakes.";
 
+  nixConfig = {
+    extra-experimental-featueres= [
+      "nix-command"
+      "flakes"
+      "pipe-operator"
+    ];
+  };
+
   inputs = {
     firefox.url = "github:nix-community/flake-firefox-nightly";
-    zen-browser.url = "github:omarcresp/zen-browser-flake";
+    devshell.url = "github:numtide/devshell";
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+    };
+    zen-browser = {
+      url = "github:0xc000022070/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    }; 
     prismlauncher.url = "github:PrismLauncher/PrismLauncher";
-    paring.url = "github:paring-chan/nix-packages";
+    noctalia.url = "github:noctalia-dev/noctalia-shell";
     niri.url = "github:sodiboo/niri-flake";
+    nixos.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixos-hardware.url = "github:nixos/nixos-hardware";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    stable.url = "github:nixos/nixpkgs/nixos-25.05";
+    stable.url = "github:nixos/nixpkgs/nixos-25.11";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
-    flake-parts.url = "github:hercules-ci/flake-parts";
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    lix.url = "https:/git.lix.systems/lix-project/lix/archive/main.tar.gz";
   };
 
   outputs =
@@ -34,47 +55,38 @@
         ...
       }:
       let
-        systems = [
-          "x86_64-linux"
-          "aarch64-darwin"
-        ];
         lib = inputs.nixpkgs.lib // inputs.home-manager.lib;
+        mkHost = hostname: nixpkgs.lib.nixosSystem {
+              specialArgs = { inherit inputs; };
+              modules = [ ./hosts/${hostname}];
+        };
       in
       {
+        systems = [ "x86_64-linux" "aarch64-darwin" ];
         imports = [
-          # Optional: use external flake logic, e.g.
-          # inputs.foo.flakeModules.default
           inputs.home-manager.flakeModules.home-manager
         ];
         flake = {
           # Put your original flake attributes here.
-          formatter = nixpkgs.legacyPackages.x86_64-linux.alejandra;
 
           nixosConfigurations = {
-            mjolnir = nixpkgs.lib.nixosSystem {
-              specialArgs = { inherit inputs; };
-              modules = [ ./configuration.nix ];
-            };
-          };
-          homeConfigurations = {
-            mjolnir = lib.homeManagerConfiguration {
-              pkgs = nixpkgs.legacyPackages.x86_64-linux;
-              extraSpecialArgs = { inherit inputs; };
-              modules = [ ./home.nix ];
-            };
-          };
+            nixWork = mkHost "nixWork";
+            #LogiRaptor = mkHost "LogiRaptor"; # TODO: fix for Desktop machine
+	  };
+          homeConfigurations.mjolnir = home-manager.lib.homeManagerConfiguration {
+	    #TODO Remove old files.
+            pkgs = import nixpkgs { system = "x86_64-linux"; };
+	    specialArgs = { inherit inputs; };
+	    modules = [ ./homes/home.nix ];
+	    
+	  };
         };
-        inherit systems;
-        perSystem =
-          { config, pkgs, ... }:
-          {
-            # Recommended: move all package definitions here.
-            # e.g. (assuming you have a nixpkgs input)
-            # packages.foo = pkgs.callPackage ./foo/package.nix { };
-            # packages.bar = pkgs.callPackage ./bar/package.nix {
-            #   foo = config.packages.foo;
-            # };
-          };
+        # inherit systems;
+        #perSystem =
+        #  { config, pkgs, ... }:
+        #  {
+
+        #  };
 
       }
     );

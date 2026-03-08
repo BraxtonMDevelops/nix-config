@@ -4,27 +4,24 @@
   pkgs,
   home-manager,
   inputs,
-  niri,
   ...
 }:
 
 {
   imports = [
-    "./desktop/niri.nix"
+    ./niri.nix 
+    ./noctalia.nix # TODO Migrate noctalia config out of niri file and configure declaratively.
   ];
   home.username = "mjolnir";
   home.homeDirectory = "/home/mjolnir";
-  home.stateVersion = "25.11";
+  home.stateVersion = "25.05";
   home.packages = with pkgs; [
     eza
     tree
     bat
     libsForQt5.qtstyleplugin-kvantum
   ];
-  home-manager ={
-    useGlobalPkgs = true;
-    useUserPakcages = true;
-  };
+
   programs.fish = {
     enable = true;
     interactiveShellInit = "set PATH ~/.config/emacs/bin $PATH";
@@ -33,13 +30,15 @@
       cat = "bat";
     };
   };
+  modules = [
+  ]  
   home.pointerCursor = {
     dotIcons.enable = true;
     gtk.enable = true;
     x11.enable = true;
     package = pkgs.banana-cursor;
     name = "Banana Cursor";
-    size = 64;
+    size = 48; # Test smaller cursor size for laptop
   };
   gtk.enable = true;
   gtk.cursorTheme = {
