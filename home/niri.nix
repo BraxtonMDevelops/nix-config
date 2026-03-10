@@ -4,10 +4,11 @@ let
   noctalia = cmd: [
     "noctalia-shell" "ipc" "call"
   ] ++ (lib.splitString " " cmd);
+in
 {
    imports = [
      inputs.noctalia.homeModules.default
-     inputs.niri-flake.homeModules.niri
+     inputs.niri.homeModules.niri
    ];
 
    programs.noctalia-shell.enable = true;
@@ -15,10 +16,18 @@ let
    programs.niri = {
      enable = true;
      package = pkgs.niri-stable;
-     settings.binds = "Mod+T".action.spawn = "ghostty"; 
-     settings.binds = with config.lib.niri.actions {"Mod+Space".action.spawn = noctalia "launcher toggle"; };
-     settings.spawn-at-startup = [ { command = [ "noctalia-shell" ]; }];
-     settings.spawn-at-startup = [ { command = [ "mako" ]; }];
+     settings = {
+	binds = with config.lib.niri.actions; { 
+          "Mod+T".action.spawn = "ghostty";
+          "Mod+Space".action.spawn = noctalia "launcher toggle"; 
+        };
+	spawn-at-startup = [{
+	  command = [
+	    "mako" 
+	    "noctalia-shell" 
+	  ];
+        }];
+     };
    };
    home.packages = with pkgs; [
      alacritty

@@ -10,7 +10,7 @@
 {
   imports = [
     ./niri.nix 
-    ./noctalia.nix # TODO Migrate noctalia config out of niri file and configure declaratively.
+    #./noctalia.nix # TODO Migrate noctalia config out of niri file and configure declaratively.
   ];
   home.username = "mjolnir";
   home.homeDirectory = "/home/mjolnir";
@@ -30,8 +30,6 @@
       cat = "bat";
     };
   };
-  modules = [
-  ]  
   home.pointerCursor = {
     dotIcons.enable = true;
     gtk.enable = true;

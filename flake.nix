@@ -70,14 +70,18 @@
           # Put your original flake attributes here.
 
           nixosConfigurations = {
-            nixWork = mkHost "nixWork";
+            nixWork = mkHost "nixWork"{
+	      modules = [
+		./hosts/nixWork
+              ];
+            };
             #LogiRaptor = mkHost "LogiRaptor"; # TODO: fix for Desktop machine
 	  };
-          homeConfigurations.mjolnir = home-manager.lib.homeManagerConfiguration {
+          homeConfigurations."mjolnir" = home-manager.lib.homeManagerConfiguration {
 	    #TODO Remove old files.
             pkgs = import nixpkgs { system = "x86_64-linux"; };
-	    specialArgs = { inherit inputs; };
-	    modules = [ ./homes/home.nix ];
+	    extraSpecialArgs = { inherit inputs; };
+	    modules = [ ./home/home.nix ];
 	    
 	  };
         };

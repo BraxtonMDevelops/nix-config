@@ -45,7 +45,7 @@
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
   # Set your time zone.
-  time.timeZone = "America/Los_Angeles";
+  time.timeZone = "America/New_York";
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -106,19 +106,12 @@
   environment.systemPackages = with pkgs; [
      bitwarden-desktop
      _1password-gui
-     helix
      firefox
      git
+     # Editors
      vim 
+     helix
      kakoune
-     vesktop
-     ghostty
-     wezterm
-     alejandra
-     bat
-     fd 
-     fish
-     piper
      findutils
      ((emacsPackagesFor pkgs.emacs).emacsWithPackages (
       epkgs: with epkgs; [
@@ -127,10 +120,22 @@
         emacsql
       ]
      ))
+     # Terminal
+     ghostty
+     wezterm
+     alejandra
+     bat
+     fd 
+     fish
+     piper
      home-manager
      maple-mono.NF
      nushell
      protonvpn-gui
+     # Chat Apps
+     vesktop
+     signal-desktop
+     element
   #   wget
   # Sort mess out here.
   ];
