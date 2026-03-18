@@ -2,7 +2,8 @@
   description = "Personal configuration of NixOS, made with flakes.";
 
   nixConfig = {
-    extra-experimental-featueres= [
+    allow-import-from-derivation = true;
+    extra-experimental-features= [
       "nix-command"
       "flakes"
       "pipe-operator"
@@ -70,11 +71,7 @@
           # Put your original flake attributes here.
 
           nixosConfigurations = {
-            nixWork = mkHost "nixWork"{
-	      modules = [
-		./hosts/nixWork
-              ];
-            };
+            nixWork = mkHost "nixWork";
             #LogiRaptor = mkHost "LogiRaptor"; # TODO: fix for Desktop machine
 	  };
           homeConfigurations."mjolnir" = home-manager.lib.homeManagerConfiguration {
