@@ -11,8 +11,9 @@
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  services.displayManager.defaultSession = "plasma";
+  
   services.xserver.displayManager = {
-  defaultSession = "plasma";
   lightdm = {
     enable = true;
     greeters.slick.enable = true;
@@ -153,7 +154,7 @@
       dates = "weekly";
     };
     #package = pkgs.nixFlakes;
-    extraOptions = " experimental-features = nix-command flakes pipe-operator ";
+    extraOptions = " experimental-features = nix-command flakes ";
     optimise.automatic = true;
     settings.auto-optimise-store = true;
   };
