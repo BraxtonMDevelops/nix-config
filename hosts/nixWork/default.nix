@@ -133,10 +133,16 @@
      maple-mono.NF
      nushell
      protonvpn-gui
+     jujutsu
+     direnv
+     nix-direnv
      # Chat Apps
      vesktop
      signal-desktop
      element
+     schildi-revenge
+     #Nix
+     nixd
   #   wget
   # Sort mess out here.
   ];

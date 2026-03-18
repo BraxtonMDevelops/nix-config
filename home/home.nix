@@ -11,6 +11,10 @@
   imports = [
     ./niri.nix 
     #./noctalia.nix # TODO Migrate noctalia config out of niri file and configure declaratively.
+    inputs.zen-browser.homeModules.beta
+  ];
+  nixpkgs.overlays = [
+     inputs.niri.overlays.niri
   ];
   home.username = "mjolnir";
   home.homeDirectory = "/home/mjolnir";
@@ -30,6 +34,12 @@
       cat = "bat";
     };
   };
+  programs.direnv = {
+    enable = true;
+    enableFishIntegration = true;
+    nix-direnv.enable = true;
+  };
+  programs.zen-browser.enable = true;
   home.pointerCursor = {
     dotIcons.enable = true;
     gtk.enable = true;
@@ -43,6 +53,8 @@
     name = "Banana Cursor";
     package = pkgs.banana-cursor;
   };
+  nix.package = pkgs.nix;
+  nix.extraOptions = " experimental-features = nix-command flakes ";
   programs.starship = {
     enable = true;
   };
