@@ -54,7 +54,7 @@
   nixpkgs.overlays = [ inputs.niri.overlays.niri inputs.emacs-overlay.overlays.default ];
   programs.niri = {
     enable = true;
-    package = pkgs.niri-stable;
+    package = pkgs.niri-unstable;
   };
   niri-flake.cache.enable = true;
   services.emacs = {

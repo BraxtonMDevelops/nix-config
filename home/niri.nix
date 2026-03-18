@@ -10,12 +10,15 @@ in
      inputs.noctalia.homeModules.default
      inputs.niri.homeModules.niri
    ];
+   nixpkgs.overlays = [
+     inputs.niri.overlays.niri
+   ];
 
    programs.noctalia-shell.enable = true;
     
    programs.niri = {
      enable = true;
-     package = pkgs.niri-stable;
+     package = pkgs.niri-unstable;
      settings = {
 	binds = with config.lib.niri.actions; { 
           "Mod+T".action.spawn = "ghostty";
