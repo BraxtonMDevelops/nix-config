@@ -1,7 +1,6 @@
-{inputs, ...}:
-{
+{inputs, ...}: {
   imports = [
-   inputs.home-manager.nixosModules.default #TODO: Refactor for usage on MacOS
+    inputs.home-manager.nixosModules.default #TODO: Refactor for usage on MacOS
   ];
   home-manager = {
     useGlobalPkgs = true;

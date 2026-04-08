@@ -6,9 +6,7 @@
   inputs,
   niri,
   ...
-}:
-
-{
+}: {
   imports = [
     "./desktop/niri.nix"
   ];
@@ -21,7 +19,7 @@
     bat
     libsForQt5.qtstyleplugin-kvantum
   ];
-  home-manager ={
+  home-manager = {
     useGlobalPkgs = true;
     useUserPakcages = true;
   };
@@ -49,5 +47,4 @@
   programs.starship = {
     enable = true;
   };
-
 }
