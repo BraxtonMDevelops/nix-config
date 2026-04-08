@@ -1,15 +1,12 @@
 # Edit this configuration e to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
 {
   pkgs,
   inputs,
   niri,
   ...
-}:
-
-{
+}: {
   imports = [
     ./hardware-configuration.nix
     ./nixos/gaming.nix
@@ -43,7 +40,6 @@
     user = "mjolnir";
     dataDir = "/home/mjolnir/";
     configDir = "/home/mjolnir/Documents/.config/syncthing";
-
   };
   hardware.pulseaudio.enable = false;
   # Set your time zone.
@@ -55,7 +51,7 @@
     package = pkgs.bluez;
   };
   services.blueman.enable = true;
-  boot.blacklistedKernelModules = [ "nouveau" ];
+  boot.blacklistedKernelModules = ["nouveau"];
 
   # Enable Xwayland to be able to play modern modded Minecraft.
   programs.xwayland = {
@@ -86,10 +82,9 @@
     driSupport32Bit = true;
   };
   services.xserver = {
-
     #Enable the X11 windowing system and set up Nvidia
     #enable = true;
-    videoDrivers = [ ];
+    videoDrivers = [];
 
     #displayManager.gddm.enable = true;
 
@@ -142,11 +137,12 @@
     discord
     docker-compose
     ((emacsPackagesFor pkgs.emacs).emacsWithPackages (
-      epkgs: with epkgs; [
-        vterm
-        pdf-tools
-        emacsql
-      ]
+      epkgs:
+        with epkgs; [
+          vterm
+          pdf-tools
+          emacsql
+        ]
     ))
     easyeffects
     element-desktop
@@ -206,19 +202,18 @@
     #kdePackages.xwaylandvideobridge
     wev
     wezterm
-   #wezterm-git
+    #wezterm-git
     winboat
     wine
     wlr-randr
     wl-clipboard
     yt-dlp
   ];
-  
 
   programs.firefox = {
     enable = true;
     package = pkgs.firefox;
-    nativeMessagingHosts.packages = [ pkgs.firefoxpwa ];
+    nativeMessagingHosts.packages = [pkgs.firefoxpwa];
   };
   # started in user sessions.
   # programs.mtr.enable = true;
