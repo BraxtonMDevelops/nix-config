@@ -3,19 +3,22 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 {
   pkgs,
+  self,
+  lib,
   inputs,
-  niri,
   ...
 }: {
   imports = [
     ./hardware-configuration.nix
-    ./nixos/gaming.nix
+    inputs.niri.nixosModules.niri
+    inputs.lix-module.nixosModules.default
+    inputs.home-manager.nixosModules.home-manager
   ];
 
   #services.emacs.enable = true;
   # Use the GRUB boot loader.
   # Additionally this is setup to allow us to detect WinDDOS installs...
-  #
+  # TODO Modularize.
   boot.loader.systemd-boot = {
     enable = true;
     configurationLimit = 10;
@@ -25,7 +28,7 @@
   virtualisation.docker = {
     enable = true;
   };
-  networking.hostName = "LogiRaptor";
+  networking.hostName = "helicon";
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
   #networking.networkmanager.wifi.backend = "iwd";
   services.pipewire = {
@@ -49,6 +52,12 @@
   hardware.bluetooth = {
     enable = true;
     package = pkgs.bluez;
+  };
+
+  home-manager = {
+   useGlobalPkgs = true;  
+   useUserPackages = true;  
+   users.mjolnir.imports = [../../home/default.nix inputs.noctalia.homeModules.default inputs.zen-browser.homeModules.beta];
   };
   services.blueman.enable = true;
   boot.blacklistedKernelModules = ["nouveau"];
@@ -161,7 +170,7 @@
     jost
     kitty
     kdePackages.ark
-    libsForQt5.qt5.qtwayland
+    qt5.qtwayland
     libsForQt5.qt5ct
     lorri
     maple-mono.NF
@@ -176,6 +185,8 @@
     obsidian
     ollama
     onlyoffice-desktopeditors
+    steam
+    inputs.prismlauncher.packages.x86_64-linux.prismlauncher
     pavucontrol
     phinger-cursors
     piper

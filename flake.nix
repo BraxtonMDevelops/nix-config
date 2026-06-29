@@ -82,7 +82,7 @@
 
           nixosConfigurations = {
             trantor = mkHost "trantor";
-            #LogiRaptor = mkHost "LogiRaptor"; # TODO: fix for Desktop machine
+            helicon = mkHost "helicon"; # TODO: fix for Desktop machine
           };
         };
         # inherit systems;
