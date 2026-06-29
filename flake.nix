@@ -9,7 +9,6 @@
       "pipe-operator"
     ];
   };
-
   inputs = {
     firefox.url = "github:nix-community/flake-firefox-nightly";
     devshell.url = "github:numtide/devshell";
@@ -41,7 +40,7 @@
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    lix= {
+    lix = {
       url = "https://git.lix.systems/lix-project/lix/archive/main.tar.gz";
       flake = false;
     };
@@ -82,14 +81,8 @@
           # Put your original flake attributes here.
 
           nixosConfigurations = {
-            nixWork = mkHost "nixWork";
+            trantor = mkHost "trantor";
             #LogiRaptor = mkHost "LogiRaptor"; # TODO: fix for Desktop machine
-          };
-          homeConfigurations."mjolnir" = home-manager.lib.homeManagerConfiguration {
-            #TODO Remove old files.
-            pkgs = import nixpkgs {system = "x86_64-linux";};
-            extraSpecialArgs = {inherit inputs;};
-            modules = [./home/home.nix];
           };
         };
         # inherit systems;

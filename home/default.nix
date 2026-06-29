@@ -5,16 +5,12 @@
   home-manager,
   inputs,
   ...
-}:
-
-{
+}: {
   imports = [
-    ./niri.nix 
+    ./niri.nix
     #./noctalia.nix # TODO Migrate noctalia config out of niri file and configure declaratively.
-    inputs.zen-browser.homeModules.beta
-  ];
-  nixpkgs.overlays = [
-     inputs.niri.overlays.niri
+    ../devel/racket.nix
+    ../devel/guile.nix
   ];
   home.username = "mjolnir";
   home.homeDirectory = "/home/mjolnir";
@@ -24,6 +20,7 @@
     tree
     bat
     libsForQt5.qtstyleplugin-kvantum
+    zoxide
   ];
 
   programs.fish = {
@@ -32,8 +29,10 @@
     shellAliases = with pkgs; {
       ls = "eza --color=auto --icons";
       cat = "bat";
+      licks = "nix";
     };
   };
+  programs.zoxide.enableFishIntegration = true;
   programs.direnv = {
     enable = true;
     enableFishIntegration = true;
@@ -53,10 +52,8 @@
     name = "Banana Cursor";
     package = pkgs.banana-cursor;
   };
-  nix.package = pkgs.nix;
-  nix.extraOptions = " experimental-features = nix-command flakes ";
   programs.starship = {
     enable = true;
+    enableFishIntegration = true;
   };
-
 }

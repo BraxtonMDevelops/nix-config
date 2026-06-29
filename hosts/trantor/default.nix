@@ -12,6 +12,7 @@
     #"./shell.nix";
     inputs.niri.nixosModules.niri
     inputs.lix-module.nixosModules.default
+    inputs.home-manager.nixosModules.home-manager
   ];
   #networking.hostName = "nixWork";
   # Use the systemd-boot EFI boot loader.
@@ -21,12 +22,15 @@
   services.displayManager.sddm.enable = true;
 
   #services.xserver.displayManager = {
-  #lightdm = {
+  #lightdm = {k
   #enable = true;
   #  greeters.slick.enable = true;
   #};
   #};
   services.desktopManager.plasma6.enable = true;
+
+  #Enalbe TailScale to use "server"
+  services.tailscale.enable = true;
 
   # Hardware basics setup
   hardware = {
@@ -40,6 +44,14 @@
     fprintd.enable = true;
     power-profiles-daemon.enable = true;
     upower.enable = true;
+  };
+
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    users.mjolnir = {
+      imports = [../../home/default.nix inputs.noctalia.homeModules.default inputs.zen-browser.homeModules.beta];
+    };
   };
 
   # Use latest kernel.
@@ -103,12 +115,23 @@
     shell = pkgs.fish;
   };
 
-  # programs.firefox.enable = true;
+  #TODO redo this later
+  #services.guix = {
+  #  enable = true;
+  #  package = pkgs.guix;
+  #  gc.enable = true;
+  #  gc.dates = "weekly";
+  #};
+
+  # Programs.firefox.enable = true;
 
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
-    bitwarden-desktop
+    aporetic
+    kdePackages.kdeconnect-kde
+    overpass
+    #bitwarden-desktop
     _1password-gui
     firefox
     git
@@ -135,18 +158,25 @@
     piper
     home-manager
     maple-mono.NF
+    nerd-fonts.symbols-only
+    overpass
     nushell
     proton-vpn
+    lazyjj
+    tree-sitter
     jujutsu
     direnv
+    ripgrep
+    nixd
     nix-direnv
+    sioyek
     # Chat Apps
+    typst
     vesktop
     signal-desktop
     element
     schildi-revenge
     #Nix
-    nixd
     #   wget
     # Sort mess out here.
   ];
