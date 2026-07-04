@@ -7,7 +7,8 @@
   lib,
   inputs,
   ...
-}: {
+}:
+{
   imports = [
     ./hardware-configuration.nix
     inputs.niri.nixosModules.niri
@@ -55,12 +56,16 @@
   };
 
   home-manager = {
-   useGlobalPkgs = true;  
-   useUserPackages = true;  
-   users.mjolnir.imports = [../../home/default.nix inputs.noctalia.homeModules.default inputs.zen-browser.homeModules.beta];
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    users.mjolnir.imports = [
+      ../../home/default.nix
+      inputs.noctalia.homeModules.default
+      inputs.zen-browser.homeModules.beta
+    ];
   };
   services.blueman.enable = true;
-  boot.blacklistedKernelModules = ["nouveau"];
+  boot.blacklistedKernelModules = [ "nouveau" ];
 
   # Enable Xwayland to be able to play modern modded Minecraft.
   programs.xwayland = {
@@ -93,7 +98,7 @@
   services.xserver = {
     #Enable the X11 windowing system and set up Nvidia
     #enable = true;
-    videoDrivers = [];
+    videoDrivers = [ ];
 
     #displayManager.gddm.enable = true;
 
@@ -126,6 +131,11 @@
     initialPassword = "mumstheword";
     shell = pkgs.fish;
   };
+  nixpkgs.overlays = [
+    (final: _prev: {
+      pnpm_10_29_2 = final.pnpm_10;
+    })
+  ];
   # Use if i want from nixpkgs-f2k overlay
   # awesome-luajit-git awesome-composite-git
   # List packages installed in system profile. To search, run:
@@ -136,6 +146,7 @@
     alacritty
     fuzzel
     # Continue regular packages.
+    jj
     alejandra
     bat
     bottles
@@ -146,15 +157,17 @@
     discord
     docker-compose
     ((emacsPackagesFor pkgs.emacs).emacsWithPackages (
-      epkgs:
-        with epkgs; [
-          vterm
-          pdf-tools
-          emacsql
-        ]
+      epkgs: with epkgs; [
+        vterm
+        pdf-tools
+        tree-sitter-langs
+        treesit-grammars.with-all-grammars
+        emacsPackages.exercism
+      ]
     ))
     easyeffects
     element-desktop
+    exercism
     eza
     fd
     findutils
@@ -192,11 +205,18 @@
     piper
     #inputs.stable.legacyPackages.x86_64-linux.protonvpn-gui
     progress
-    protonvpn-gui
+    proton-vpn
     qbittorrent
     qt6.qtwayland
     recursive
     ripgrep
+    #TODO factor this into its own files..PHP Related Tools:
+    phpPackages.composer
+    intelephense
+    php
+    phpunit
+    psysh
+    #
     nil
     nixfmt-rfc-style
     spotify
@@ -205,6 +225,8 @@
     swaybg
     #symbola
     texlive.combined.scheme-medium
+    typst
+    tree-sitter
     usbutils
     vscode
     vscode-fhs
@@ -224,7 +246,7 @@
   programs.firefox = {
     enable = true;
     package = pkgs.firefox;
-    nativeMessagingHosts.packages = [pkgs.firefoxpwa];
+    nativeMessagingHosts.packages = [ pkgs.firefoxpwa ];
   };
   # started in user sessions.
   # programs.mtr.enable = true;

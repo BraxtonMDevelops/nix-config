@@ -4,7 +4,8 @@
   lib,
   inputs,
   ...
-}: {
+}:
+{
   imports = [
     ./hardware-configuration.nix
     #"./niri.nix";
@@ -22,6 +23,12 @@
   services.displayManager.sddm.enable = true;
 
   #services.xserver.displayManager = {
+  services.syncthing = {
+    enable = true;
+    user = "mjolnir";
+    dataDir = "/home/mjolnir/";
+    configDir = "/home/mjolnir/Documents/.config/syncthing";
+  };
   #lightdm = {k
   #enable = true;
   #  greeters.slick.enable = true;
@@ -50,7 +57,11 @@
     useGlobalPkgs = true;
     useUserPackages = true;
     users.mjolnir = {
-      imports = [../../home/default.nix inputs.noctalia.homeModules.default inputs.zen-browser.homeModules.beta];
+      imports = [
+        ../../home/default.nix
+        inputs.noctalia.homeModules.default
+        inputs.zen-browser.homeModules.beta
+      ];
     };
   };
 
@@ -69,7 +80,10 @@
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-  nixpkgs.overlays = [inputs.niri.overlays.niri inputs.emacs-overlay.overlays.default];
+  nixpkgs.overlays = [
+    inputs.niri.overlays.niri
+    inputs.emacs-overlay.overlays.default
+  ];
   programs.niri = {
     enable = true;
     package = inputs.niri-git.packages.x86_64-linux.default;
@@ -111,7 +125,12 @@
   programs.fish.enable = true;
   users.users.mjolnir = {
     isNormalUser = true;
-    extraGroups = ["wheel" "video" "audio" "networkmanager"]; # Enable ‘sudo’ for the user.
+    extraGroups = [
+      "wheel"
+      "video"
+      "audio"
+      "networkmanager"
+    ]; # Enable ‘sudo’ for the user.
     shell = pkgs.fish;
   };
 
@@ -141,12 +160,11 @@
     kakoune
     findutils
     ((emacsPackagesFor pkgs.emacs).emacsWithPackages (
-      epkgs:
-        with epkgs; [
-          vterm
-          pdf-tools
-          emacsql
-        ]
+      epkgs: with epkgs; [
+        vterm
+        pdf-tools
+
+      ]
     ))
     # Terminal
     ghostty
