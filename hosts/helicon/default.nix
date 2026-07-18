@@ -135,6 +135,8 @@
     (final: _prev: {
       pnpm_10_29_2 = final.pnpm_10;
     })
+    inputs.niri.overlays.niri
+    inputs.emacs-overlay.overlays.default
   ];
   # Use if i want from nixpkgs-f2k overlay
   # awesome-luajit-git awesome-composite-git
@@ -149,7 +151,7 @@
     jj
     alejandra
     bat
-    bottles
+    #bottles
     brave
     clang
     coreutils
@@ -240,6 +242,9 @@
     wine
     wlr-randr
     wl-clipboard
+    # Gayming
+    protonup-ng
+    protonplus
     yt-dlp
   ];
 
@@ -254,9 +259,15 @@
   #   enable = true;
   #   enableSSHSupport = true;
   # };
-  services.emacs.package = pkgs.emacs;
-  services.emacs.enable = true;
   services.tailscale.enable = true;
+  programs.niri = {
+    enable = true;
+    package = inputs.niri-git.packages.x86_64-linux.default;
+  };
+  services.emacs = {
+    enable = true;
+    package = pkgs.emacs;
+  };
 
   # List services that you want to enable:
 

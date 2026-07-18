@@ -1,0 +1,6 @@
+#+TITLE: TODO list for NixOS Machine Config
+
+
+Re add Protonup to helicon alongside Proton GE Bin
+Add JJ to helicon
+Refactor Emjacs config to add packages alongside.
