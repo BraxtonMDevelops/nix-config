@@ -20,9 +20,25 @@
   # Use the GRUB boot loader.
   # Additionally this is setup to allow us to detect WinDDOS installs...
   # TODO Modularize.
+  niri-flake.cache.enable = true;
   boot.loader.systemd-boot = {
     enable = true;
     configurationLimit = 10;
+  };
+  programs.nh.enable = true;
+  nix.settings = {
+    extra-substituters = [
+      "https://noctalia.cachix.org"
+      "https://wezterm.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
+      "wezterm.cachix.org-1:kAbhjYUC9qvblTE+s7S+kl5XM1zVa4skO+E/1IDWdH0="
+    ];
+    trusted-users = [
+      "root"
+      "mjolnir"
+    ];
   };
   systemd.services.NetworkManager-wait-online.enable = false;
   services.flatpak.enable = true;
@@ -134,6 +150,7 @@
   nixpkgs.overlays = [
     (final: _prev: {
       pnpm_10_29_2 = final.pnpm_10;
+      wezterm = inputs.wezterm.packages.x86_64-linux.default;
     })
     inputs.niri.overlays.niri
     inputs.emacs-overlay.overlays.default
@@ -219,7 +236,7 @@
     phpunit
     psysh
     #
-    nil
+    nixd
     nixfmt-rfc-style
     spotify
     sqlite
@@ -238,7 +255,7 @@
     wev
     wezterm
     #wezterm-git
-    winboat
+    #rwinboat
     wine
     wlr-randr
     wl-clipboard
@@ -262,7 +279,7 @@
   services.tailscale.enable = true;
   programs.niri = {
     enable = true;
-    package = inputs.niri-git.packages.x86_64-linux.default;
+    package = pkgs.niri-unstable;
   };
   services.emacs = {
     enable = true;

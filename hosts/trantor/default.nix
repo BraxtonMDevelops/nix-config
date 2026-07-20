@@ -4,8 +4,7 @@
   lib,
   inputs,
   ...
-}:
-{
+}: {
   imports = [
     ./hardware-configuration.nix
     #"./niri.nix";
@@ -160,11 +159,11 @@
     kakoune
     findutils
     ((emacsPackagesFor pkgs.emacs).emacsWithPackages (
-      epkgs: with epkgs; [
-        vterm
-        pdf-tools
-
-      ]
+      epkgs:
+        with epkgs; [
+          vterm
+          pdf-tools
+        ]
     ))
     # Terminal
     ghostty

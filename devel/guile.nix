@@ -1,5 +1,9 @@
-{pkgs, lib, home-manager, config, ...}:
-
 {
-  home.packages = with pkgs; [ guile ];
+  pkgs,
+  lib,
+  home-manager,
+  config,
+  ...
+}: {
+  home.packages = with pkgs; [guile];
 }
