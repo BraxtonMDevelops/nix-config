@@ -20,7 +20,6 @@
   # Use the GRUB boot loader.
   # Additionally this is setup to allow us to detect WinDDOS installs...
   # TODO Modularize.
-  niri-flake.cache.enable = true;
   boot.loader.systemd-boot = {
     enable = true;
     configurationLimit = 10;
