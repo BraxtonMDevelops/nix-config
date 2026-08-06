@@ -2,17 +2,18 @@
   inputs,
   pkgs,
   ...
-}: {
+}:
+{
   #Setup.
-  imports = [inputs.niri.nixosModules.niri];
+  imports = [ inputs.niri.nixosModules.niri ];
   environment.systemPackages = with pkgs; [
     xwayland-satellite
   ];
-  nixpkgs.overlays = [inputs.niri.overlays.niri];
+  nixpkgs.overlays = [ inputs.niri.overlays.niri ];
 
   programs.niri = {
     enable = true;
-    package = pkgs.niri-unstable;
+    package = pkgs.niri;
   };
 
   environment.variables.NIXOS_OZONE_WL = "1";

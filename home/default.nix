@@ -33,12 +33,12 @@
     };
   };
   programs.zoxide.enableFishIntegration = true;
+  programs.zoxide.enable = true;
   programs.direnv = {
     enable = true;
     enableFishIntegration = true;
     nix-direnv.enable = true;
   };
-  programs.zen-browser.enable = true;
   home.pointerCursor = {
     dotIcons.enable = true;
     gtk.enable = true;

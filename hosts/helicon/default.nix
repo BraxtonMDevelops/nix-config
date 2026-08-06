@@ -76,7 +76,6 @@
     users.mjolnir.imports = [
       ../../home/default.nix
       inputs.noctalia.homeModules.default
-      inputs.zen-browser.homeModules.beta
     ];
   };
   services.blueman.enable = true;
@@ -176,11 +175,12 @@
     docker-compose
     ((emacsPackagesFor pkgs.emacs).emacsWithPackages (
       epkgs: with epkgs; [
-        vterm
+        editorconfig
         pdf-tools
         tree-sitter-langs
+        ghostel
         treesit-grammars.with-all-grammars
-        emacsPackages.exercism
+        vterm
       ]
     ))
     easyeffects
@@ -191,7 +191,8 @@
     findutils
     firefox
     firefoxpwa
-    inputs.firefox.packages.x86_64-linux.firefox-nightly-bin
+    # Remove firefox nightly while testing Zen Browser
+    #inputs.firefox.packages.x86_64-linux.firefox-nightly-bin
     flatpak
     ghostty
     git
@@ -213,9 +214,11 @@
     nix-output-monitor
     nixpkgs-fmt
     #nyxt
+    inputs.zen-browser.packages.x86_64-linux.default
     obsidian
     ollama
     onlyoffice-desktopeditors
+    sioyek
     steam
     inputs.prismlauncher.packages.x86_64-linux.prismlauncher
     pavucontrol
@@ -304,7 +307,6 @@
     #package = pkgs.nixFlakes;
     extraOptions = " experimental-features = nix-command flakes ";
     optimise.automatic = true;
-    settings.auto-optimise-store = true;
   };
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

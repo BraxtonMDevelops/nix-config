@@ -17,6 +17,7 @@
     eza
     tree
     bat
+    zoxide
     libsForQt5.qtstyleplugin-kvantum
   ];
   home-manager = {

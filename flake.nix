@@ -20,7 +20,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     zen-browser = {
-      url = "github:0xc000022070/zen-browser-flake";
+      url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     prismlauncher.url = "github:PrismLauncher/PrismLauncher";
@@ -51,32 +51,28 @@
     };
   };
 
-  outputs =
-    {
-      self,
-      home-manager,
-      nixpkgs,
-      flake-parts,
-      stable,
-      ...
-    }@inputs:
-    flake-parts.lib.mkFlake { inherit inputs; } (
-      top@{
+  outputs = {
+    self,
+    home-manager,
+    nixpkgs,
+    flake-parts,
+    stable,
+    ...
+  } @ inputs:
+    flake-parts.lib.mkFlake {inherit inputs;} (
+      top @ {
         config,
         withSystem,
         moduleWithSystem,
         ...
-      }:
-      let
+      }: let
         lib = inputs.nixpkgs.lib // inputs.home-manager.lib;
-        mkHost =
-          hostname:
+        mkHost = hostname:
           nixpkgs.lib.nixosSystem {
-            specialArgs = { inherit inputs; };
-            modules = [ ./hosts/${hostname} ];
+            specialArgs = {inherit inputs;};
+            modules = [./hosts/${hostname}];
           };
-      in
-      {
+      in {
         systems = [
           "x86_64-linux"
           "aarch64-darwin"
