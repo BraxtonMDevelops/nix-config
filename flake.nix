@@ -30,7 +30,8 @@
     nixos.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:nixos/nixos-hardware";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    stable.url = "github:nixos/nixpkgs/nixos-25.11";
+    stable.url = "github:nixos/nixpkgs/nixos-26.05";
+    niri.inputs.nixpkgs.follows = "stable";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
@@ -51,28 +52,32 @@
     };
   };
 
-  outputs = {
-    self,
-    home-manager,
-    nixpkgs,
-    flake-parts,
-    stable,
-    ...
-  } @ inputs:
-    flake-parts.lib.mkFlake {inherit inputs;} (
-      top @ {
+  outputs =
+    {
+      self,
+      home-manager,
+      nixpkgs,
+      flake-parts,
+      stable,
+      ...
+    }@inputs:
+    flake-parts.lib.mkFlake { inherit inputs; } (
+      top@{
         config,
         withSystem,
         moduleWithSystem,
         ...
-      }: let
+      }:
+      let
         lib = inputs.nixpkgs.lib // inputs.home-manager.lib;
-        mkHost = hostname:
+        mkHost =
+          hostname:
           nixpkgs.lib.nixosSystem {
-            specialArgs = {inherit inputs;};
-            modules = [./hosts/${hostname}];
+            specialArgs = { inherit inputs; };
+            modules = [ ./hosts/${hostname} ];
           };
-      in {
+      in
+      {
         systems = [
           "x86_64-linux"
           "aarch64-darwin"
