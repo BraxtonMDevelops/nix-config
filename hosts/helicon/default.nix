@@ -11,9 +11,9 @@
 {
   imports = [
     ./hardware-configuration.nix
-    inputs.niri.nixosModules.niri
     inputs.lix-module.nixosModules.default
     inputs.home-manager.nixosModules.home-manager
+    inputs.niri-nix.nixosModules.default
   ];
 
   #services.emacs.enable = true;
@@ -29,16 +29,29 @@
     extra-substituters = [
       "https://noctalia.cachix.org"
       "https://wezterm.cachix.org"
+      "https://niri-nix.cachix.org"
     ];
     extra-trusted-public-keys = [
       "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
       "wezterm.cachix.org-1:kAbhjYUC9qvblTE+s7S+kl5XM1zVa4skO+E/1IDWdH0="
+      "niri-nix.cachix.org-1:SvFtqpDcf7Sm1SMJdby1/+Y+6f3Yt3/3PMcSTKPJNJ0="
     ];
     trusted-users = [
       "root"
       "mjolnir"
     ];
   };
+  #Rewrite for Niri-nix instead of niri-flake
+  security = {
+    polkit = {
+      enable = true;
+      package = pkgs.polkit;
+    };
+  };
+  services.gnome.gnome-keyring.enable = true;
+  services.dbus.enable = true;
+  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  #Buffer area
   systemd.services.NetworkManager-wait-online.enable = false;
   services.flatpak.enable = true;
   virtualisation.docker = {
@@ -76,6 +89,7 @@
     users.mjolnir.imports = [
       ../../home/default.nix
       inputs.noctalia.homeModules.default
+      inputs.niri-nix.homeModules.default
     ];
   };
   services.blueman.enable = true;
@@ -150,7 +164,7 @@
       pnpm_10_29_2 = final.pnpm_10;
       wezterm = inputs.wezterm.packages.x86_64-linux.default;
     })
-    inputs.niri.overlays.niri
+    inputs.niri-nix.overlays.niri-nix
     inputs.emacs-overlay.overlays.default
   ];
   # Use if i want from nixpkgs-f2k overlay
@@ -197,6 +211,7 @@
     ghostty
     git
     gtk4
+    zip
     helix
     home-manager
     jost
@@ -281,7 +296,7 @@
   services.tailscale.enable = true;
   programs.niri = {
     enable = true;
-    package = pkgs.niri-unstable;
+    package = pkgs.niri;
   };
   services.emacs = {
     enable = true;

@@ -25,13 +25,12 @@
     };
     prismlauncher.url = "github:PrismLauncher/PrismLauncher";
     noctalia.url = "github:noctalia-dev/noctalia-shell";
-    niri.url = "github:sodiboo/niri-flake";
+    niri-nix.url = "git+https://codeberg.org/BANanaD3V/niri-nix";
     #TODO: Use niri flake actually.
     nixos.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:nixos/nixos-hardware";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     stable.url = "github:nixos/nixpkgs/nixos-26.05";
-    niri.inputs.nixpkgs.follows = "stable";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
     flake-parts = {
       url = "github:hercules-ci/flake-parts";

@@ -5,10 +5,11 @@
   lib,
   config,
   ...
-}: {
+}:
+{
   programs.noctalia.enable = true;
 
-  programs.niri = {
+  wayland.windowManager.niri = {
     settings = {
       environment = {
         GDK_BACKEND = "wayland";
@@ -32,12 +33,12 @@
         };
       };
       binds = {
-        "Mod+T".action.spawn = ["wezterm"];
+        "Mod+T".action.spawn = [ "wezterm" ];
         "Mod+R".action.spawn = [
           "noctalia-ipc"
           "launcher toggle"
         ];
-        "Mod+Shift+Slash".action.show-hotkey-overlay = [];
+        "Mod+Shift+Slash".action.show-hotkey-overlay = [ ];
         "XF86AudioLowerVolume".action.spawn = [
           "noctalia-ipc"
           "call"
