@@ -11,9 +11,11 @@
 {
   imports = [
     ./hardware-configuration.nix
+    inputs.mango.nixosModules.mango
     inputs.lix-module.nixosModules.default
     inputs.home-manager.nixosModules.home-manager
     inputs.niri-nix.nixosModules.default
+    inputs.dms.nixosModules.dank-material-shell
   ];
 
   #services.emacs.enable = true;
@@ -24,22 +26,50 @@
     enable = true;
     configurationLimit = 10;
   };
+  virtualisation.libvirtd.enable = true;
+  programs.virt-manager.enable = true;
+  # DMS testing:
+  programs.dank-material-shell = {
+    enable = true;
+    enableSystemMonitoring = true;
+    enableVPN = false;
+    enableDynamicTheming = false;
+  };
+  programs.dsearch.enable = true;
   programs.nh.enable = true;
-  nix.settings = {
-    extra-substituters = [
-      "https://noctalia.cachix.org"
-      "https://wezterm.cachix.org"
-      "https://niri-nix.cachix.org"
-    ];
-    extra-trusted-public-keys = [
-      "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
-      "wezterm.cachix.org-1:kAbhjYUC9qvblTE+s7S+kl5XM1zVa4skO+E/1IDWdH0="
-      "niri-nix.cachix.org-1:SvFtqpDcf7Sm1SMJdby1/+Y+6f3Yt3/3PMcSTKPJNJ0="
-    ];
-    trusted-users = [
-      "root"
-      "mjolnir"
-    ];
+  programs.mango = {
+    addLoginEntry = true;
+    enable = true;
+  };
+  nix = {
+    settings = {
+      experimental-features = [
+        "flakes"
+        "nix-command"
+        "pipe-operator"
+      ];
+
+      extra-substituters = [
+        "https://noctalia.cachix.org"
+        "https://wezterm.cachix.org"
+        "https://niri-nix.cachix.org"
+      ];
+      extra-trusted-public-keys = [
+        "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
+        "wezterm.cachix.org-1:kAbhjYUC9qvblTE+s7S+kl5XM1zVa4skO+E/1IDWdH0="
+        "niri-nix.cachix.org-1:SvFtqpDcf7Sm1SMJdby1/+Y+6f3Yt3/3PMcSTKPJNJ0="
+      ];
+      trusted-users = [
+        "root"
+        "mjolnir"
+      ];
+    };
+    #package = pkgs.nixFlakes;
+    gc = {
+      automatic = true;
+      dates = "weekly";
+    };
+    optimise.automatic = true;
   };
   #Rewrite for Niri-nix instead of niri-flake
   security = {
@@ -90,6 +120,7 @@
       ../../home/default.nix
       inputs.noctalia.homeModules.default
       inputs.niri-nix.homeModules.default
+      inputs.mango.hmModules.mango
     ];
   };
   services.blueman.enable = true;
@@ -107,13 +138,6 @@
   };
   # Linux Kernel setup:
 
-  #Rewritten version of X11 things
-  #hardware.nvidia = {
-  #  modesetting.enable = true;
-  #  open = true;
-  #  nvidiaSettings = true;
-  #  forceFullCompositionPipeline = true;
-  #};
   # TODO Rewrite opengl stuff with graphics
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -123,16 +147,16 @@
     #driSupport = true;
     driSupport32Bit = true;
   };
+  #TODO move all services into one basket
   services.xserver = {
-    #Enable the X11 windowing system and set up Nvidia
-    #enable = true;
-    videoDrivers = [ ];
-
-    #displayManager.gddm.enable = true;
 
     displayManager.defaultSession = "plasma";
     #desktopManager.gnome.enable = true;
     windowManager.awesome.enable = true;
+  };
+  services.ollama = {
+    enable = true;
+    package = pkgs.ollama-vulkan;
   };
   services.displayManager.sddm.enable = true;
 
@@ -166,6 +190,7 @@
     })
     inputs.niri-nix.overlays.niri-nix
     inputs.emacs-overlay.overlays.default
+    inputs.helium-flake.overlays.default
   ];
   # Use if i want from nixpkgs-f2k overlay
   # awesome-luajit-git awesome-composite-git
@@ -187,7 +212,7 @@
     direnv
     discord
     docker-compose
-    ((emacsPackagesFor pkgs.emacs).emacsWithPackages (
+    ((emacsPackagesFor pkgs.emacs-unstable).emacsWithPackages (
       epkgs: with epkgs; [
         editorconfig
         pdf-tools
@@ -205,6 +230,7 @@
     findutils
     firefox
     firefoxpwa
+    helium
     # Remove firefox nightly while testing Zen Browser
     #inputs.firefox.packages.x86_64-linux.firefox-nightly-bin
     flatpak
@@ -268,6 +294,8 @@
     vscode-fhs
     vesktop
     vlc
+    opencode
+    opencode-desktop
     #kdePackages.xwaylandvideobridge
     wev
     wezterm
@@ -300,7 +328,7 @@
   };
   services.emacs = {
     enable = true;
-    package = pkgs.emacs;
+    package = pkgs.emacs-unstable;
   };
 
   # List services that you want to enable:
@@ -314,15 +342,6 @@
   # system.copySystemConfiguration = true;
   nixpkgs.config.allowUnfree = true;
 
-  nix = {
-    gc = {
-      automatic = true;
-      dates = "weekly";
-    };
-    #package = pkgs.nixFlakes;
-    extraOptions = " experimental-features = nix-command flakes ";
-    optimise.automatic = true;
-  };
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave

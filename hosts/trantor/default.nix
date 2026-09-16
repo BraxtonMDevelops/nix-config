@@ -5,12 +5,12 @@
   inputs,
   ...
 }: {
-  imports = [
+imports = [
     ./hardware-configuration.nix
     #"./niri.nix";
     #"./noctalia.nix";
     #"./shell.nix";
-    inputs.niri.nixosModules.niri
+    inputs.niri-nix.nixosModules.default
     inputs.lix-module.nixosModules.default
     inputs.home-manager.nixosModules.home-manager
   ];
@@ -58,8 +58,6 @@
     users.mjolnir = {
       imports = [
         ../../home/default.nix
-        inputs.noctalia.homeModules.default
-        inputs.zen-browser.homeModules.beta
       ];
     };
   };
@@ -80,7 +78,6 @@
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
   nixpkgs.overlays = [
-    inputs.niri.overlays.niri
     inputs.emacs-overlay.overlays.default
   ];
   programs.niri = {

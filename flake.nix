@@ -10,31 +10,17 @@
     ];
   };
   inputs = {
+    #Browsers
     firefox.url = "github:nix-community/flake-firefox-nightly";
-    devshell.url = "github:numtide/devshell";
-    treefmt-nix = {
-      url = "github:numtide/treefmt-nix";
-    };
-    wezterm = {
-      url = "github:wez/wezterm?dir=nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    helium-flake.url = "github:oxcl/nix-flake-helium-browser";
     zen-browser = {
       url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    prismlauncher.url = "github:PrismLauncher/PrismLauncher";
-    noctalia.url = "github:noctalia-dev/noctalia-shell";
-    niri-nix.url = "git+https://codeberg.org/BANanaD3V/niri-nix";
-    #TODO: Use niri flake actually.
-    nixos.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixos-hardware.url = "github:nixos/nixos-hardware";
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    stable.url = "github:nixos/nixpkgs/nixos-26.05";
-    emacs-overlay.url = "github:nix-community/emacs-overlay";
-    flake-parts = {
-      url = "github:hercules-ci/flake-parts";
-      inputs.nixpkgs-lib.follows = "nixpkgs";
+    #Nix Stuff
+    devshell.url = "github:numtide/devshell";
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
     };
     home-manager = {
       url = "github:nix-community/home-manager/master";
@@ -49,6 +35,28 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.lix.follows = "lix";
     };
+    nixos.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixos-hardware.url = "github:nixos/nixos-hardware";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    stable.url = "github:nixos/nixpkgs/nixos-26.05";
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
+    #Terminal
+    wezterm = {
+      url = "github:wez/wezterm?dir=nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    #Editor
+    emacs-overlay.url = "github:nix-community/emacs-overlay";
+    #Gaming
+    prismlauncher.url = "github:PrismLauncher/PrismLauncher";
+    #Wayland stuff (will eventually remove either Noctalia or DMS)
+    mango.url = "github:mangowm/mango";
+    niri-nix.url = "git+https://codeberg.org/BANanaD3V/niri-nix";
+    noctalia.url = "github:noctalia-dev/noctalia";
+    dms.url = "github:AvengeMedia/DankMaterialShell";
   };
 
   outputs =

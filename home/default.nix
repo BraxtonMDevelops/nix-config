@@ -23,6 +23,7 @@
     libsForQt5.qtstyleplugin-kvantum
     zoxide
   ];
+  wayland.windowManager.mango.enable = true;
 
   programs.fish = {
     enable = true;
