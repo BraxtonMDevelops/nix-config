@@ -12,6 +12,7 @@
     #./noctalia.nix # TODO Migrate noctalia config out of niri file and configure declaratively.
     ../devel/racket.nix
     ../devel/guile.nix
+    ../devel/rust.nix
   ];
   home.username = "mjolnir";
   home.homeDirectory = "/home/mjolnir";

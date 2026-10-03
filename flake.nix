@@ -17,6 +17,10 @@
       url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     #Nix Stuff
     devshell.url = "github:numtide/devshell";
     treefmt-nix = {
@@ -49,14 +53,17 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     #Editor
-    emacs-overlay.url = "github:nix-community/emacs-overlay";
+    emacs-overlay = {
+      url = "github:nix-community/emacs-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     #Gaming
     prismlauncher.url = "github:PrismLauncher/PrismLauncher";
     #Wayland stuff (will eventually remove either Noctalia or DMS)
     mango.url = "github:mangowm/mango";
     niri-nix.url = "git+https://codeberg.org/BANanaD3V/niri-nix";
-    noctalia.url = "github:noctalia-dev/noctalia";
-    dms.url = "github:AvengeMedia/DankMaterialShell";
+    noctalia.url = "github:noctalia-dev/noctalia/cachix";
+    dms.url = "github:AvengeMedia/DankMaterialShell/stable";
   };
 
   outputs =

@@ -191,6 +191,7 @@
     inputs.niri-nix.overlays.niri-nix
     inputs.emacs-overlay.overlays.default
     inputs.helium-flake.overlays.default
+    inputs.rust-overlay.overlays.default
   ];
   # Use if i want from nixpkgs-f2k overlay
   # awesome-luajit-git awesome-composite-git
@@ -205,6 +206,7 @@
     jj
     alejandra
     bat
+    inputs.noctalia.packages.x86_64-linux.default
     #bottles
     brave
     clang
@@ -212,7 +214,7 @@
     direnv
     discord
     docker-compose
-    ((emacsPackagesFor pkgs.emacs-unstable).emacsWithPackages (
+    ((emacsPackagesFor pkgs.emacs-pgtk).emacsWithPackages (
       epkgs: with epkgs; [
         editorconfig
         pdf-tools
@@ -290,8 +292,8 @@
     typst
     tree-sitter
     usbutils
-    vscode
-    vscode-fhs
+    #vscode
+    #vscode-fhs
     vesktop
     vlc
     opencode
@@ -328,7 +330,7 @@
   };
   services.emacs = {
     enable = true;
-    package = pkgs.emacs-unstable;
+    package = pkgs.emacs-pgtk;
   };
 
   # List services that you want to enable:
