@@ -30,7 +30,7 @@
     enable = true;
     interactiveShellInit = "set PATH ~/.config/emacs/bin $PATH";
     shellAliases = with pkgs; {
-      ls = "eza --color=auto --icons";
+      ls = "eza --color=auto --icons=auto";
       cat = "bat";
       licks = "nix";
     };
@@ -40,9 +40,9 @@
   programs.direnv = {
     enable = true;
     enableFishIntegration = true;
-    nix-direnv.enable = true;
   };
   home.pointerCursor = {
+    enable = true;
     dotIcons.enable = true;
     gtk.enable = true;
     x11.enable = true;

@@ -14,7 +14,7 @@
     firefox.url = "github:nix-community/flake-firefox-nightly";
     helium-flake.url = "github:oxcl/nix-flake-helium-browser";
     zen-browser = {
-      url = "github:youwen5/zen-browser-flake";
+      url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     rust-overlay = {
@@ -22,7 +22,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     #Nix Stuff
-    devshell.url = "github:numtide/devshell";
+    #devshell.url = "github:numtide/devshell";
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
     };
@@ -32,12 +32,7 @@
     };
     lix = {
       url = "https://git.lix.systems/lix-project/lix/archive/main.tar.gz";
-      flake = false;
-    };
-    lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/main.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.lix.follows = "lix";
     };
     nixos.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:nixos/nixos-hardware";
@@ -60,10 +55,13 @@
     #Gaming
     prismlauncher.url = "github:PrismLauncher/PrismLauncher";
     #Wayland stuff (will eventually remove either Noctalia or DMS)
-    mango.url = "github:mangowm/mango";
+    mango = {
+      url = "github:mangowm/mango";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     niri-nix.url = "git+https://codeberg.org/BANanaD3V/niri-nix";
     noctalia.url = "github:noctalia-dev/noctalia/cachix";
-    dms.url = "github:AvengeMedia/DankMaterialShell/stable";
+    #dms.url = "github:duxlabs-dev/dux-shell/stable";
   };
 
   outputs =

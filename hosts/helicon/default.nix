@@ -12,10 +12,9 @@
   imports = [
     ./hardware-configuration.nix
     inputs.mango.nixosModules.mango
-    inputs.lix-module.nixosModules.default
     inputs.home-manager.nixosModules.home-manager
     inputs.niri-nix.nixosModules.default
-    inputs.dms.nixosModules.dank-material-shell
+    inputs.lix.nixosModules.default
   ];
 
   #services.emacs.enable = true;
@@ -29,13 +28,7 @@
   virtualisation.libvirtd.enable = true;
   programs.virt-manager.enable = true;
   # DMS testing:
-  programs.dank-material-shell = {
-    enable = true;
-    enableSystemMonitoring = true;
-    enableVPN = false;
-    enableDynamicTheming = false;
-  };
-  programs.dsearch.enable = true;
+  #programs.dsearch.enable = true;
   programs.nh.enable = true;
   programs.mango = {
     addLoginEntry = true;
@@ -140,19 +133,22 @@
 
   # TODO Rewrite opengl stuff with graphics
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
+  # Test older kernel to try and get GTNH to work.
   boot.kernelPackages = pkgs.linuxPackages_latest;
-  hardware.graphics.enable = true;
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
-    #driSupport = true;
-    driSupport32Bit = true;
+    enable32Bit = true;
+    #extraPackages = with pkgs; [
+    #libvdpau-va-gl
+    #libva-vdpau-driver
+    #];
   };
+
   #TODO move all services into one basket
   services.xserver = {
 
     displayManager.defaultSession = "plasma";
     #desktopManager.gnome.enable = true;
-    windowManager.awesome.enable = true;
   };
   services.ollama = {
     enable = true;
@@ -165,7 +161,10 @@
   # sound.enable = true;
   programs.kdeconnect.enable = true;
 
-  programs.fish.enable = true;
+  programs.fish = {
+    enable = true;
+    useBabelfish = true;
+  };
   #programs.starship.enable =
 
   #kserver.libinput.enable = true;
@@ -186,19 +185,38 @@
   nixpkgs.overlays = [
     (final: _prev: {
       pnpm_10_29_2 = final.pnpm_10;
-      wezterm = inputs.wezterm.packages.x86_64-linux.default;
+      khal = _prev.khal.overrideAttrs (old: {
+        outputs = builtins.filter (o: o != "man") old.outputs;
+      });
+      #Broken wezterm = inputs.wezterm.packages.x86_64-linux.default;
     })
     inputs.niri-nix.overlays.niri-nix
     inputs.emacs-overlay.overlays.default
     inputs.helium-flake.overlays.default
     inputs.rust-overlay.overlays.default
   ];
+  #Fix 1Password info
+  environment.etc = {
+    "1password/custom_allowed_browsers" = {
+      text = ''
+        .zen-wrapped
+      '';
+      mode = "0755";
+    };
+  };
+  programs._1password-gui = {
+    enable = true;
+    polkitPolicyOwners = [ "mjolnir" ];
+  };
   # Use if i want from nixpkgs-f2k overlay
   # awesome-luajit-git awesome-composite-git
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    kdePackages.partitionmanager
     _1password-gui
+    _1password-cli
+    quickshell
     #These 2 pkgs below are for use with niri.
     alacritty
     fuzzel
@@ -253,7 +271,6 @@
     neovim
     nerd-fonts.symbols-only
     nix-diff
-    nix-direnv
     nix-output-monitor
     nixpkgs-fmt
     #nyxt
@@ -263,7 +280,12 @@
     onlyoffice-desktopeditors
     sioyek
     steam
-    inputs.prismlauncher.packages.x86_64-linux.prismlauncher
+    #inputs.prismlauncher.packages.x86_64-linux.prismlauncher
+    openjdk25
+    openjdk21
+    openjdk17
+    openjdk8
+    prismlauncher
     pavucontrol
     phinger-cursors
     piper
@@ -283,7 +305,7 @@
     #
     nixd
     nixfmt-rfc-style
-    spotify
+    #spotify
     sqlite
     lua-language-server
     swaybg
@@ -342,7 +364,10 @@
   # (/run/current-system/configuration.nix). This is useful in case you
   # accidentally delete configuration.nix.
   # system.copySystemConfiguration = true;
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config = {
+    allowUnfree = true;
+    rocmSupport = true;
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
