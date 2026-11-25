@@ -24,6 +24,7 @@
     libsForQt5.qtstyleplugin-kvantum
     zoxide
   ];
+  programs.noctalia.enable = true;
   wayland.windowManager.mango.enable = true;
 
   programs.fish = {

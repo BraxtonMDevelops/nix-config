@@ -15,6 +15,7 @@
     inputs.home-manager.nixosModules.home-manager
     inputs.niri-nix.nixosModules.default
     inputs.lix.nixosModules.default
+    inputs.umbriel.nixosModules.default
   ];
 
   #services.emacs.enable = true;
@@ -46,11 +47,13 @@
         "https://noctalia.cachix.org"
         "https://wezterm.cachix.org"
         "https://niri-nix.cachix.org"
+        "https://umbriel.cachix.org"
       ];
       extra-trusted-public-keys = [
         "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
         "wezterm.cachix.org-1:kAbhjYUC9qvblTE+s7S+kl5XM1zVa4skO+E/1IDWdH0="
         "niri-nix.cachix.org-1:SvFtqpDcf7Sm1SMJdby1/+Y+6f3Yt3/3PMcSTKPJNJ0="
+        "umbriel.cachix.org-1:JfNq/2yg2S6D6z4Z2dVSZrZlDPQTKtexB6GAVLD98nw="
       ];
       trusted-users = [
         "root"
@@ -113,6 +116,7 @@
       ../../home/default.nix
       inputs.noctalia.homeModules.default
       inputs.niri-nix.homeModules.default
+      inputs.umbriel.homeModules.default
       inputs.mango.hmModules.mango
     ];
   };
@@ -123,6 +127,7 @@
   programs.xwayland = {
     enable = true;
   };
+  programs.umbriel.enable = true;
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
@@ -142,11 +147,19 @@
     #libvdpau-va-gl
     #libva-vdpau-driver
     #];
+    #
   };
+  # Use Steam Frame easier here.
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true;
+  };
+  boot.extraModprobeConfig = ''
+    options cfg80211 ieee80211_regdom=US
+  '';
 
   #TODO move all services into one basket
   services.xserver = {
-
     displayManager.defaultSession = "plasma";
     #desktopManager.gnome.enable = true;
   };
@@ -168,6 +181,7 @@
   #programs.starship.enable =
 
   #kserver.libinput.enable = true;
+  #TODO Test to enable guix laterservices.guix.enable = true
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.mjolnir = {
@@ -181,6 +195,17 @@
     ]; # Enable ‘sudo’ for the user.
     initialPassword = "mumstheword";
     shell = pkgs.fish;
+  };
+  fonts = {
+    packages = with pkgs; [
+      jost
+      symbola
+      nerd-fonts.symbols-only
+      maple-mono.NF
+      noto-fonts-color-emoji
+      merriweather
+    ];
+    fontconfig.enable = true;
   };
   nixpkgs.overlays = [
     (final: _prev: {
@@ -214,6 +239,9 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     kdePackages.partitionmanager
+    smartmontools
+    efibootmgr
+    efibooteditor
     _1password-gui
     _1password-cli
     quickshell
@@ -224,19 +252,23 @@
     jj
     alejandra
     bat
+    merriweather
     inputs.noctalia.packages.x86_64-linux.default
     #bottles
-    brave
     clang
     coreutils
     direnv
     discord
+    maple-mono.NF
+    jost
+    nerd-fonts.symbols-only
     docker-compose
     ((emacsPackagesFor pkgs.emacs-pgtk).emacsWithPackages (
       epkgs: with epkgs; [
         editorconfig
         pdf-tools
         tree-sitter-langs
+        jinx
         ghostel
         treesit-grammars.with-all-grammars
         vterm
@@ -249,7 +281,6 @@
     fd
     findutils
     firefox
-    firefoxpwa
     helium
     # Remove firefox nightly while testing Zen Browser
     #inputs.firefox.packages.x86_64-linux.firefox-nightly-bin
@@ -260,16 +291,13 @@
     zip
     helix
     home-manager
-    jost
     kitty
     kdePackages.ark
     qt5.qtwayland
     libsForQt5.qt5ct
     lorri
-    maple-mono.NF
     mlocate
     neovim
-    nerd-fonts.symbols-only
     nix-diff
     nix-output-monitor
     nixpkgs-fmt
@@ -277,9 +305,9 @@
     inputs.zen-browser.packages.x86_64-linux.default
     obsidian
     ollama
-    onlyoffice-desktopeditors
+    libreoffice
+    #onlyoffice-desktopeditors disabled as GTK2 is kaput
     sioyek
-    steam
     #inputs.prismlauncher.packages.x86_64-linux.prismlauncher
     openjdk25
     openjdk21
@@ -310,7 +338,7 @@
     lua-language-server
     swaybg
     #symbola
-    texlive.combined.scheme-medium
+    texliveMedium
     typst
     tree-sitter
     usbutils

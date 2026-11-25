@@ -34,6 +34,7 @@
       url = "https://git.lix.systems/lix-project/lix/archive/main.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    umbriel.url = "github:noctalia-dev/umbriel/cachix";
     nixos.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:nixos/nixos-hardware";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";

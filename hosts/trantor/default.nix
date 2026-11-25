@@ -5,7 +5,7 @@
   inputs,
   ...
 }: {
-imports = [
+  imports = [
     ./hardware-configuration.nix
     #"./niri.nix";
     #"./noctalia.nix";
